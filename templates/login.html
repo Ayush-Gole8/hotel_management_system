@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel</title>
+    <link rel="stylesheet" href="/static/login.css">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}"> -->
+</head>
+<body>
+    <!-- User Login  -->
+    <div class="container">
+        <div class="form-container" id="form-container">
+            <!-- Login Form -->
+            <div class="form login-form">
+                <span class="login">USER LOGIN</span>
+                <form id="login_form" action="/select_role" method="POST">
+                    <input type="text" placeholder="User ID" class="user_id" name="user_id" required> 
+                    <input type="password" placeholder="Password" class="pass" name="password" id="password" required> 
+                    <img src="{{ url_for('static', filename='eye-close.png') }}" id="eyeicon" class="eyeimage">
+                    <select name="role" class="role_select">
+                        <option value="role">Role</option>
+                        <option value="user">User</option>
+                    </select>
+                    <button type="submit" class="login_button">LOGIN</button>
+                </form>
+                <span class="toggle" id="toEmployee">Are you an Employee?</span>
+            </div>
+
+            <!-- Employee Login Form -->
+            <div class="form employee-form">
+                <span class="login">EMPLOYEE LOGIN</span>
+                <form id="employee_login_form" action="/select_role" method="POST">
+                    <input type="text" placeholder="User ID" class="user_id" name="user_id" required> 
+                    <input type="password" placeholder="Password" class="pass" name="password" id="employee_password" required> 
+                    <img src="{{ url_for('static', filename='eye-close.png') }}"  id="eyeicon2" class="eyeimage">
+                    <select name="role" class="role_select"> 
+                        <option value="role">Role</option>
+                        <option value="manager">Manager</option>
+                        <option value="receptionist">Receptionist</option>
+                        <option value="housekeeping">Housekeeping</option>
+                    </select>
+                    <button type="submit" class="login_button">LOGIN</button>
+                </form>
+                <span class="toggle" id="toUser">Are you an User?</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(eyeIcon, passwordInput) {
+            eyeIcon.onclick = function() {``
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    eyeIcon.src = "{{ url_for('static', filename='eye-open.png') }}"; // Change to open eye icon
+                } else {
+                    passwordInput.type = "password";
+                    eyeIcon.src = "{{ url_for('static', filename='eye-close.png') }}"; // Change to closed eye icon
+                }
+            }
+        }
+        
+        // Get elements for user login
+        let eyeiconUser = document.getElementById("eyeicon");
+        let passwordUser = document.getElementById("password");
+        togglePasswordVisibility(eyeiconUser, passwordUser);
+        
+        // Get elements for employee login
+        let eyeiconEmployee = document.getElementById("eyeicon2");
+        let passwordEmployee = document.getElementById("employee_password");
+        togglePasswordVisibility(eyeiconEmployee, passwordEmployee);
+
+        const formContainer = document.getElementById('form-container');
+        const toEmployee = document.getElementById('toEmployee');
+        const toUser = document.getElementById('toUser');
+
+        toEmployee.addEventListener('click', () => {
+            formContainer.style.transform = 'rotateY(180deg)';
+        });
+
+        toUser.addEventListener('click', () => {
+            formContainer.style.transform = 'rotateY(0deg)';
+        });
+    </script>
+</body>
+</html>

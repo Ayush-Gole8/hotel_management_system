@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel California</title>
+    <!-- <link rel="stylesheet" href="/static/styles.css"> -->
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HOTEL CALIFORNIA</h1>
+            <p>WANT LUXARIOUS VACATION ?</p>
+            <p>Experience luxury and comfort at the heart of California with our world-class services and accommodations. Whether you're here for a relaxing stay or a memorable vacation, Hotel California offers the perfect blend of elegance and warmth.</p>
+        </header>
+
+        <section class="customer-section">
+            <p>Already Been our Customer?</p>
+            <!-- <a href="/login.html" class="btn">Sign In</a> -->
+            <a href="{{ url_for('login') }}" class="btn">Sign In</a>
+        </section>
+    </div>
+</body>
+</html>

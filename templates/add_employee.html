@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Employee</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <label for="employee_name">Name:</label>
+            <input type="text" id="employee_name" name="employee_name" required><br>
+
+            <label for="employee_address">Address:</label>
+            <input type="text" id="employee_address" name="employee_address" required><br>
+
+            <label for="employee_job_desc">Job Description:</label>
+            <select id="employee_job_desc" name="employee_job_desc" required>
+                <option value="">Select Job Description</option>
+                <option value="Manager">Manager</option>
+                <option value="Housekeeping Staff">Housekeeping Staff</option>
+                <option value="Receptionist">Receptionist</option>
+            </select><br>
+
+            <input type="submit" value="Add Employee">
+        </form>
+    </div>
+</body>
+</html>

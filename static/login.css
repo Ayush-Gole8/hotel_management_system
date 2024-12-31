@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Added for consistent box-sizing */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background-image: url(abstract-blur-hotel-lobby-interior-background-generative-ai_874904-49029.avif);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex; /* Centering the container */
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+.container {
+    width: 400px;
+    height: 400px;
+    perspective: 1000px; /* Needed for 3D effect */
+}
+.form-container {
+    width: 100%;
+    height: 100%;
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Align items in a column */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+.form {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    padding: 20px;
+    display: flex; /* Flexbox layout */
+    flex-direction: column; /* Align items in a column */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px; /* Added for smooth corners */
+}
+.login-form {
+    z-index: 2;
+}
+.employee-form {
+    transform: rotateY(180deg);
+}
+.login {
+    font-size: 40px;
+    font-weight: bolder;
+    color: white;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+.user_id, .pass, .role_select {
+    height: 40px;
+    width: 80%; /* Adjust width for responsiveness */
+    font-size: 20px;
+    margin: 10px 0; /* Space between inputs */
+    margin-left: 40px;
+}
+.eyeimage {
+    width: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 60px; /* Adjusted position for the eye icon */
+    top: 175px; /* Adjusted top position */   
+}
+#eyeicon{
+    position: absolute;
+    top: 205px;
+    right: 60px;
+}
+.login_button {
+    height: 40px;
+    width: 80%; /* Adjust width for responsiveness */
+    background-color: rgba(223, 119, 9, 1);
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    margin-top: 20px; /* Space above the button */
+    margin-left: 40px;
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Added for smooth corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+.login_button:hover {
+    background-color: rgba(180, 100, 9, 1); /* Darker shade on hover */
+}
+.toggle {
+    color: blanchedalmond;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 20px; /* Space above the toggle link */
+}

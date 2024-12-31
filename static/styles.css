@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('/static/abstract-blur-hotel-lobby-interior-background-generative-ai_874904-49029.avif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px); /* Added blur effect for background */
+    animation: backgroundShift 15s infinite alternate ease-in-out; /* Smooth background brightness animation */
+}
+
+@keyframes backgroundShift {
+    0% { filter: brightness(100%); }
+    100% { filter: brightness(80%); }
+}
+
+.container {
+    max-width: 800px;
+    padding: 40px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1); /* Transparent white for glassmorphism */
+    backdrop-filter: blur(10px); /* Added blur for glass effect */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Deeper shadow for elegance */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    transition: transform 0.6s ease, box-shadow 0.6s ease; /* Smooth transition */
+}
+
+.container:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+header h1 {
+    font-size: 4rem;
+    margin-bottom: 30px;
+    color: #C70000;
+    text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.9); /* Enhanced text shadow */
+    font-family: 'Poppins', sans-serif; /* More modern font for header */
+    animation: fadeIn 2s ease-in-out; /* Smooth fade-in effect */
+}
+
+header p {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    font-family: 'Cursive', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    animation: slideUp 1.5s ease-out; /* Slide-in effect */
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(45deg, #FF8C00, #FF4500); /* Gradient for a more vibrant look */
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Deeper shadow for buttons */
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #FF6347, #FF4500); /* Brighter gradient on hover */
+    transform: translateY(-5px) scale(1.1); /* Slight lift and scale on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); /* More pronounced shadow on hover */
+}
+
+section p {
+    font-size: 1.4rem;
+    color: #C70000;
+    font-weight: bolder;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-family: 'Times New Roman', serif; /* Classic serif font for body text */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+    animation: textFadeIn 2s ease-out; /* Smooth text appearance */
+}
+
+@keyframes textFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

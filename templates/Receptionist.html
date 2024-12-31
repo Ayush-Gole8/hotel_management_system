@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Receptionist_style.css') }}">
+    <style>
+        /* Style for the no result message */
+        #noResult {
+            display: none;
+            color: red;
+            background-color: #f9d6d5;
+            border: 1px solid red;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            width: 50%;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        /* Additional margin for buttons */
+        #addCustomerButton {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Style for available rooms */
+        .room-list {
+            margin: 20px 0;
+        }
+
+        /* Style for tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .book-button {
+            padding: 6px 12px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .book-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 20%;
+            float: left;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+
+        /* Content styling */
+        .content {
+            width: 80%;
+            float: left;
+            padding: 10px;
+        }
+
+        /* Clear floats */
+        .container::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        /* Message display */
+        #bookingMessage {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Error message display */
+        #bookingError {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Receptionist</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="showContent('bookingPage')">Booking Page</button>
+            <button onclick="window.location.href='{{ url_for('pickup_drop') }}'">Pickup-Drop Service</button>
+            <button onclick="showContent('customerList')">Customer List</button>
+        </div>
+        
+        <div class="content">
+            <!-- Booking Page -->
+            <div id="bookingPage" class="tabContent">
+                <h2>Booking Page</h2>
+                <p>Here you can manage bookings for guests.</p>
+                
+                <div class="room-list">
+                    <h3>Available Rooms</h3>
+                    {% if available_rooms %}
+                        <table id="roomTable">
+                        <thead>
+                            <tr>
+                                <th>Room No</th>
+                                <th>Room Rates</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                            {% for room in available_rooms %}
+                            <tr id="room-row-{{ room.room_no }}">
+                                <td>{{ room.room_no }}</td>
+                                <td>{{ room.room_rates }}</td>
+                                <td>
+                                    <button class="book-button" onclick="bookRoom({{ room.room_no }})">Book</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>No rooms available for booking at the moment.</p>
+                    {% endif %}
+                </div>
+                <p id="bookingMessage">Room booked successfully!</p>
+                <p id="bookingError">Error booking room.</p>
+            </div>
+
+            <!-- Customer List Page -->
+            <div id="customerList" class="tabContent" style="display:none;">
+                <h2>Customers List</h2>
+                
+                <input type="text" id="searchCustomer" placeholder="Search customer by ID or name..." onkeyup="searchCustomer()">
+                
+                <table id="customerTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Date of Birth</th>
+                        <th>Age</th>
+                        <th>Mobile Number</th>
+                        <th>Room No</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                    {% for customer in customers %}
+                    <tr id="customer-row-{{ customer.customer_id }}">
+                        <td>{{ customer.customer_id }}</td>
+                        <td>{{ customer.customer_name }}</td>
+                        <td>{{ customer.customer_address }}</td>
+                        <td>{{ customer.customer_dob }}</td>
+                        <td>{{ customer.customer_age }}</td>
+                        <td>{{ customer.customer_mobile_no }}</td>
+                        <td>
+                            {% if customer.room %}
+                                {{ customer.room.room_no }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{{ url_for('delete_customer', customer_id=customer.customer_id) }}" method="POST" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this customer?');" style="background-color: red; color: white;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <p id="noResult">No result found</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab') || 'bookingPage'; 
+            showContent(tab);
+        });
+
+        function showContent(tabId) {
+            var tabs = document.getElementsByClassName("tabContent");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";
+            }
+            document.getElementById(tabId).style.display = "block";
+        }
+
+        function bookRoom(roomNo) {
+            let customerName = prompt("Enter customer name:");
+            let customerAddress = prompt("Enter customer address:");
+            let customerDOB = prompt("Enter customer date of birth (YYYY-MM-DD):");
+            let customerAge = prompt("Enter customer age:");
+            let customerMobileNo = prompt("Enter customer mobile number:");
+
+            // Validate customer details
+            if (customerName && customerAddress && customerDOB && customerAge && customerMobileNo) {
+                const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                if (!dateRegex.test(customerDOB)) {
+                    alert("Invalid date format. Please use YYYY-MM-DD.");
+                    return;
+                }
+
+                if (isNaN(customerAge) || customerAge <= 0) {
+                    alert("Please enter a valid age.");
+                    return;
+                }
+
+                const mobileRegex = /^\d{10}$/;
+                if (!mobileRegex.test(customerMobileNo)) {
+                    alert("Please enter a valid 10-digit mobile number.");
+                    return;
+                }
+
+                fetch('/book_room', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        room_no: roomNo,
+                        customer_name: customerName,
+                        customer_address: customerAddress,
+                        customer_dob: customerDOB,
+                        customer_age: customerAge,
+                        customer_mobile_no: customerMobileNo,
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errData => {
+                            throw new Error(errData.message || 'Network response was not ok');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('bookingMessage').textContent = data.message;
+                        document.getElementById('bookingMessage').style.display = "block";
+                        document.getElementById('bookingError').style.display = "none";
+
+                        const roomRow = document.getElementById(`room-row-${roomNo}`);
+                        if (roomRow) {
+                            roomRow.remove();
+                        }
+
+                        addCustomerToList({
+                            customer_id: data.customer_id,
+                            customer_name: customerName,
+                            customer_address: customerAddress,
+                            customer_dob: customerDOB,
+                            customer_age: customerAge,
+                            customer_mobile_no: customerMobileNo,
+                            room_no: roomNo
+                        });
+                    } else {
+                        document.getElementById('bookingError').textContent = "Error: " + data.message;
+                        document.getElementById('bookingError').style.display = "block";
+                        document.getElementById('bookingMessage').style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('bookingError').textContent = error.message;
+                    document.getElementById('bookingError').style.display = "block";
+                    document.getElementById('bookingMessage').style.display = "none";
+                });
+            } else {
+                alert("Please fill in all customer details.");
+            }
+        }
+
+        function addCustomerToList(customer) {
+            const customerTable = document.getElementById("customerTable");
+
+            const newRow = customerTable.insertRow();
+            newRow.setAttribute('id', `customer-row-${customer.customer_id}`);
+
+            const idCell = newRow.insertCell(0);
+            idCell.textContent = customer.customer_id;
+
+            const nameCell = newRow.insertCell(1);
+            nameCell.textContent = customer.customer_name;
+
+            const addressCell = newRow.insertCell(2);
+            addressCell.textContent = customer.customer_address;
+
+            const dobCell = newRow.insertCell(3);
+            dobCell.textContent = customer.customer_dob;
+
+            const ageCell = newRow.insertCell(4);
+            ageCell.textContent = customer.customer_age;
+
+            const mobileCell = newRow.insertCell(5);
+            mobileCell.textContent = customer.customer_mobile_no;
+
+            const roomCell = newRow.insertCell(6);
+            roomCell.textContent = customer.room_no;
+
+            const actionsCell = newRow.insertCell(7);
+            const deleteForm = document.createElement('form');
+            deleteForm.action = `/delete_customer/${customer.customer_id}`;
+            deleteForm.method = 'POST';
+            deleteForm.style.display = 'inline';
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'submit';
+            deleteButton.textContent = 'Delete';
+            deleteButton.style.backgroundColor = 'red';
+            deleteButton.style.color = 'white';
+            deleteButton.onclick = () => confirm('Are you sure you want to delete this customer?');
+            deleteForm.appendChild(deleteButton);
+            actionsCell.appendChild(deleteForm);
+        }
+
+        function searchCustomer() {
+            const searchValue = document.getElementById("searchCustomer").value.toLowerCase();
+            const customerRows = document.getElementById("customerTable").getElementsByTagName("tr");
+
+            let found = false;
+            for (let i = 1; i < customerRows.length; i++) {
+                const row = customerRows[i];
+                const customerName = row.cells[1].textContent.toLowerCase();
+                const customerID = row.cells[0].textContent.toLowerCase();
+
+                if (customerName.includes(searchValue) || customerID.includes(searchValue)) {
+                    row.style.display = "";
+                    found = true;
+                } else {
+                    row.style.display = "none";
+                }
+            }
+
+            const noResult = document.getElementById("noResult");
+            if (found) {
+                noResult.style.display = "none";
+            } else {
+                noResult.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

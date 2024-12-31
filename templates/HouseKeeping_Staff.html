@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housekeeping</title>
+    <link rel="stylesheet" href="/static/HouseKeeping_Staff_Style.css">
+</head>
+<body>
+    <!-- Header section to display Housekeeping Staff title at the top center -->
+    <div class="header">
+        <h1>Housekeeping Staff</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="showContent('roomService')">Room Service</button>
+            <button onclick="showContent('lostItem')">Lost Item</button>
+        </div>
+        
+        <div class="content">
+            <div id="roomService" class="tabContent" style="display:none;">
+                <h2>Room Service</h2>
+                <table>
+             <thead>
+            <tr>
+            <th>Room No</th>
+            <th>Customer ID</th>
+            <th>Service Type</th>
+            <th>Status</th>
+            <th>Action</th>  <!-- New Column for Actions -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in room_service_requests %}
+        <tr><td>{{ request.room_no }}</td>
+            <td>{{ request.customer_id }}</td>
+            <td>{{ request.service_type }}</td>
+            <td>{{ request.status }}</td>
+            <td>
+                <!-- Button to delete the request -->
+                <form action="{{ url_for('delete_service', service_id=request.service_id) }}" method="POST" style="display:inline;">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this service request?');">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+            </div>
+        
+            <div id="lostItem" class="tabContent" style="display:none;">
+                <h2>Lost Items</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lost Item ID</th>
+                            <th>Item Name</th>
+                            <th>Room No</th>
+                            <th>Customer ID</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in lost_items %}
+                        <tr>
+                            <td>{{ item.item_id }}</td>
+                            <td>{{ item.item_name }}</td>
+                            <td>{{ item.room_no }}</td>
+                            <td>{{ item.customer_id }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>
+                                <form action="{{ url_for('delete_lost_item', item_id=item.item_id) }}" method="POST" style="display:inline;">
+                                    <input type="submit" value="Retrieve" onclick="return confirm('Are you sure you want to delete this lost item record?');">
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>  
+        </div>
+            
+            
+        <!-- <div id="lostItem" class="tabContent" style="display:none;">
+            <h2>Lost Items</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lost Item ID</th>
+                        <th>Item Name</th>
+                        <th>Room No</th>
+                        <th>Customer ID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lost_items %}
+                    <tr>
+                        <td>{{ item.item_id }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td>{{ item.room_no }}</td>
+                        <td>{{ item.customer_id }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_lost_item', item_id=item.item_id) }}" method="POST" style="display:inline;">
+                                <input type="submit" value="Retrieve" onclick="return confirm('Are you sure you want to delete this lost item record?');">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> -->
+        
+            
+        </div>
+    </div>
+
+    <script>
+        // Display the first tab content by default when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            showContent('roomService');
+        });
+
+        function showContent(tabId) {
+            // Hide all tab contents
+            var tabs = document.getElementsByClassName("tabContent");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";
+            }
+            // Show the selected tab
+            document.getElementById(tabId).style.display = "block";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Pickup and Drop Service</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
+</head>
+<body>
+    <header>
+        <h1>Request Pickup and Drop Service</h1>
+    </header>
+    
+    <main>
+        <form action="{{ url_for('request_pickup_drop') }}" method="POST">
+            <div class="form-group">
+                <label for="pickup_location">Pickup Location:</label>
+                <input type="text" id="pickup_location" name="pickup_location" required>
+            </div>
+            <div class="form-group">
+                <label for="drop_location">Drop-off Location:</label>
+                <input type="text" id="drop_location" name="drop_location" required>
+            </div>
+            <div class="form-group">
+                <label for="pickup_date">Pickup Date:</label>
+                <input type="date" id="pickup_date" name="pickup_date" required>
+            </div>
+            <div class="form-group">
+                <label for="pickup_time">Pickup Time:</label>
+                <input type="time" id="pickup_time" name="pickup_time" required>
+            </div>
+            <div class="form-group">
+                <label for="additional_requests">Additional Requests:</label>
+                <textarea id="additional_requests" name="additional_requests" rows="4"></textarea>
+            </div>
+            <button type="submit">Request Service</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Hotel Name. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

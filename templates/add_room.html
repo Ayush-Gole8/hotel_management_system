@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Room</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <label for="room_no">Room No:</label>
+            <input type="text" id="room_no" name="room_no" required><br>
+
+            <label for="room_rates">Rates:</label>
+            <input type="number" id="room_rates" name="room_rates" required><br>
+
+            <label for="room_status">Status:</label>
+            <select id="room_status" name="room_status" required>
+                <option value="">Select Status</option>
+                <option value="Vacant">Vacant</option>
+                <option value="Occupied">Occupied</option>
+            </select><br>
+
+            <input type="submit" value="Add Room">
+        </form>
+
+        
+    </div>
+</body>
+</html>

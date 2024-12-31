@@ -1,0 +1,250 @@
+/* Universal Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif; /* Modern font for fancier feel */
+}
+
+/* Body & General Setup */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #471b70, #a93ddb); /* Gradient background for body */
+    color: #fff;
+    font-size: 16px;
+}
+
+/* Header Section */
+.header {
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(90deg, #3a1b70, #471b70, #a93ddb);
+    padding: 20px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+    animation: header-fade 1.5s ease-in-out; /* Fancy animation */
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Text glow */
+    margin: 0;
+}
+
+/* Header Fade-In Animation */
+@keyframes header-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Container Setup */
+.container {
+    display: flex;
+    height: calc(100vh - 60px); /* Adjust for header */
+    width: 100%;
+}
+
+/* Sidebar Section */
+.sidebar {
+    width: 25%;
+    height: 100%;
+    background: linear-gradient(180deg, #080c4d, #471b70); /* Vertical gradient */
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-top-right-radius: 50px; /* Rounded corner for luxury touch */
+    border-bottom-right-radius: 50px;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar button {
+    padding: 15px;
+    color: #fff;
+    background: linear-gradient(145deg, #471b70, #a93ddb); /* Button gradient */
+    border: none;
+    text-align: left;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3); /* Button shadow */
+}
+
+.sidebar button:hover {
+    background: linear-gradient(145deg, #a93ddb, #471b70); /* Reverse gradient on hover */
+    transform: translateX(10px); /* Slide effect on hover */
+    box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.4); /* Bigger shadow on hover */
+}
+
+/* Content Section */
+.content {
+    width: 75%;
+    padding: 40px;
+    background: #f3f3f3;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1); /* Add shadow to content */
+    color: #333;
+    overflow-y: auto; /* Ensure content scrolls */
+}
+
+.tabContent {
+    display: none;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Tab content shadow */
+    transition: opacity 0.4s ease;
+    width: 75%;
+}
+
+.tabContent h2 {
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+    color: #471b70; /* Complement gradient theme */
+    text-transform: uppercase;
+}
+
+/* Show first tab content by default */
+#personalInfo {
+    display: block;
+    opacity: 1;
+}
+
+/* Enhanced Form & Input Styles */
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #471b70;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #471b70;
+    border-radius: 10px;
+    background: #f9f9f9;
+    font-size: 1.1rem;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #a93ddb;
+    box-shadow: 0 0 10px rgba(169, 61, 219, 0.4); /* Fancy glow on focus */
+}
+
+/* Submit Button Enhancement */
+input[type="submit"] {
+    background: linear-gradient(145deg, #471b70, #a93ddb); /* Button gradient */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Button shadow */
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(145deg, #a93ddb, #471b70); /* Reverse gradient on hover */
+    transform: translateY(-5px); /* Hover animation */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Deeper shadow on hover */
+}
+
+/* Table Enhancement */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background: linear-gradient(145deg, #471b70, #3a1b70); /* Gradient header */
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+    color: black;
+}
+
+table tbody tr:nth-of-type(odd) {
+    background-color: #fff;
+    color: black;
+}
+
+table tbody tr:hover {
+    background-color: #a93ddb;
+    color: #fff;
+    transform: scale(1.02);
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+/* Message Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+li.success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+li.error {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #471b70;
+    padding: 15px 30px;
+    border-radius: 30px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: #a93ddb;
+    color: white;
+    transform: translateY(-5px);
+}

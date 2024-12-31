@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickup/Drop Requests</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Receptionist_style.css') }}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pickup/Drop Requests</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Pickup Location</th>
+                <th>Drop Location</th>
+                <th>Service Time</th>
+                <th>Customer ID</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if pickup_drop_requests and pickup_drop_requests|length > 0 %}
+                {% for request in pickup_drop_requests %}
+                <tr>
+                    <td>{{ request.pickup_drop_service_id }}</td>
+                    <td>{{ request.pickup_location }}</td>
+                    <td>{{ request.drop_service_location }}</td>
+                    <td>{{ request.pickup_drop_service_time }}</td>
+                    <td>{{ request.customer_id }}</td>
+                    <td>{{ request.status }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('pickup_drop') }}">
+                            <input type="hidden" name="request_id" value="{{ request.pickup_drop_service_id }}">
+                            <button type="submit" name="action" value="Accept" id="accept_button" style="background-color: green; color: white;" >Accept</button>
+                            <button type="submit" name="action" value="Reject" id="reject_button" style="background-color: red; color: white;">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No requests available.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>

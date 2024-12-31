@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Customer & Book Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Receptionist_style.css') }}">
+    <style>
+        /* Basic styling for the form */
+        .form-container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+        }
+
+        .form-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 14px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Back button */
+        .back-button {
+            width: 50%;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+        }
+
+        .back-button a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Message display */
+        .message {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent form from submitting the default way
+            const form = event.target;
+
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success message or error message
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerText = data.message; // Display success or error message
+                form.reset(); // Optionally reset the form
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h3>Add Customer & Book Room</h3>
+        <form action="{{ url_for('add_customer', room_no=room_no) }}" method="POST" onsubmit="submitForm(event)">
+            <input type="text" name="customer_name" placeholder="Name" required>
+            <input type="text" name="customer_address" placeholder="Address" required>
+            <input type="date" name="customer_dob" placeholder="Date of Birth" required>
+            <input type="number" name="customer_age" placeholder="Age" required>
+            <input type="text" name="customer_mobile_no" placeholder="Mobile No" required>
+            <input type="hidden" name="room_no" id="room_no" value="{{ room_no }}">
+            <button type="submit">Add Customer & Book Room</button>
+        </form>
+        <div id="message" class="message"></div> <!-- Div to display messages -->
+    </div>
+
+    <div class="back-button">
+        <a href="{{ url_for('receptionist') }}">&#8592; Back to Receptionist Dashboard</a>
+    </div>
+</body>
+</html>

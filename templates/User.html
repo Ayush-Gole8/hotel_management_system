@@ -1,0 +1,252 @@
+<!-- templates/User.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/User_style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>User Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="showContent('viewBookedRoom')">View Booked Room</button>
+            <button onclick="showContent('pickupDropService')">Pickup Drop Service</button>
+            <button onclick="showContent('requestRoomService')">Request Room Service</button>
+            <button onclick="showContent('reportLostItem')">Report Lost Item</button>
+            <button onclick="showContent('submitFeedback')">Submit Feedback</button>
+        </div>
+        
+        <div class="content">
+            
+            
+            <!-- View Booked Room Tab -->
+            <div id="viewBookedRoom" class="tabContent" style="display:none;">
+                <h2>View Booked Room</h2>
+                {% if booked_room %}
+                    <p>Your booked room details:</p>
+                    <p>Room Number: {{ booked_room.room_no }}</p>
+                    <p>Status: {{ booked_room.status_display }}</p>
+                {% else %}
+                    <p>You have not booked any room yet.</p>
+                {% endif %}
+            </div>
+        
+            
+            <!-- Pickup Drop Service Tab -->
+            <div id="pickupDropService" class="tabContent" style="display:none;">
+                <h2>Pickup Drop Service</h2>
+                <form action="{{ url_for('request_pickup_drop') }}" method="POST">
+                    <label for="customerId">Customer ID:</label>
+                    <input type="text" id="customerId" name="customerId" required>
+                    
+                    <label for="pickupLocation">Pickup Location:</label>
+                    <select id="pickupLocation" name="pickupLocation" required onchange="updateDropOptions()">
+                        <option value="Hotel">Hotel</option>
+                        <option value="Wadala Station">Wadala Station</option>
+                    </select>
+            
+                    <label for="dropLocation">Drop Location:</label>
+                    <select id="dropLocation" name="dropLocation" required>
+                        <option value="Wadala Station">Wadala Station</option>
+                        <option value="Hotel">Hotel</option>
+                    </select>
+            
+                    <button type="submit" id="req_room_service">Request Pickup Drop Service</button>
+                </form>
+            
+                <h3>Your Pickup/Drop Requests</h3>
+<ul>
+    {% if pickup_drop_requests %}
+        {% for request in pickup_drop_requests %}
+            <li>
+                Pickup: {{ request.pickup_location }} | Drop: {{ request.drop_service_location }} | Status: {{ request.status }}
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>No pickup/drop requests found.</li>
+    {% endif %}
+</ul>
+
+            </div>
+
+            <div id="requestRoomService" class="tabContent" style="display:none;">
+                <h2>Request Room Service</h2>
+                <form method="POST" action="{{ url_for('request_room_service') }}">
+                    <label for="customerId">Customer ID:</label>
+                    <input type="text" id="customerId" name="customerId" required><br>
+            
+                    <label for="roomNo">Room Number:</label>
+                    <input type="text" id="roomNo" name="roomNo" required><br>
+            
+                    <label for="serviceType">Service Type:</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select Service Type</option>
+                        <option value="Room Cleaning">Room Cleaning</option>
+                        <option value="Food Delivery">Food Delivery</option>
+                        <option value="Laundry">Laundry</option>
+                        <option value="Wake-up Call">Wake-up Call</option>
+                    </select><br>
+            
+                    <button type="submit" id="req_room_service">Request Room Service</button>
+                </form>
+            </div>
+            
+            <div id="reportLostItem" class="tabContent" style="display:none;">
+                <h2>Report Lost Item</h2>
+                <form action="{{ url_for('report_lost_item') }}" method="POST">
+                    <label for="customerId">Customer ID:</label>
+                    <input type="text" id="customerId" name="customer_id" required>
+
+                    <label for="roomNo">Room Number:</label>
+                    <input type="text" id="roomNo" name="room_no" required>
+                    
+                    <label for="item_name">Item Name:</label>
+                    <input type="text" id="item_name" name="item_name" required>
+                    
+                    <input type="submit" value="Report Lost Item">
+                </form>
+            </div>
+
+            <div id="submitFeedback" class="tabContent" style="display:none;">
+                <h2>Submit Feedback</h2>
+                <form method="POST" action="{{ url_for('submit_feedback') }}">
+                    <label for="customer_id">Customer ID:</label>
+                    <input type="text" id="customer_id" name="customer_id" required><br>
+            
+                    <label for="feedback">Feedback:</label>
+                    <textarea id="feedback" name="feedback" required></textarea><br>
+            
+                    <button type="submit" id="req_room_service">Submit Feedback</button>
+                </form>
+            </div>
+
+</div>
+
+
+            
+            <!-- Request Room Service Tab -->
+            <!-- <div id="requestRoomService" class="tabContent" style="display:none;">
+                <h2>Request Room Service</h2>
+                <form method="POST" action="{{ url_for('request_room_service') }}">
+                    <label for="customerId">Customer ID:</label>
+                    <input type="text" id="customerId" name="customerId" required><br>
+            
+                    <label for="roomNo">Room Number:</label>
+                    <input type="text" id="roomNo" name="roomNo" required><br>
+            
+                    <label for="serviceType">Service Type:</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select Service Type</option>
+                        <option value="Room Cleaning">Room Cleaning</option>
+                        <option value="Food Delivery">Food Delivery</option>
+                        <option value="Laundry">Laundry</option>
+                        <option value="Wake-up Call">Wake-up Call</option>
+                    </select><br>
+            
+                    <button type="submit">Request Room Service</button>
+                </form>
+            </div> -->
+            
+            
+            <!-- Report Lost Item Tab -->
+            <!-- <div id="reportLostItem" class="tabContent" style="display:none;">
+                <h2>Report Lost Item</h2>
+                <form action="{{ url_for('report_lost_item') }}" method="POST">
+                    <label for="customerId">Customer ID:</label>
+                    <input type="text" id="customerId" name="customer_id" required>
+
+                    <label for="roomNo">Room Number:</label>
+                    <input type="text" id="roomNo" name="room_no" required>
+                    
+                    <label for="item_name">Item Name:</label>
+                    <input type="text" id="item_name" name="item_name" required>
+                    
+                    <input type="submit" value="Report Lost Item">
+                </form>
+            </div> -->
+            
+            
+            <!-- Submit Feedback Tab -->
+            <!-- <div id="submitFeedback" class="tabContent" style="display:none;">
+                <h2>Submit Feedback</h2>
+                <form method="POST" action="{{ url_for('submit_feedback') }}">
+                    <label for="customer_id">Customer ID:</label>
+                    <input type="text" id="customer_id" name="customer_id" required><br>
+            
+                    <label for="feedback">Feedback:</label>
+                    <textarea id="feedback" name="feedback" required></textarea><br>
+            
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </div> -->
+            
+            
+            
+        </div>
+    </div>
+
+    <!-- Flash Message Overlay -->
+    <div class="flash-message" id="flash-message" style="display:none;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        // Display the first tab content by default when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            showContent('personalDetails');
+        });
+
+        function updateDropOptions() {
+        const pickupLocation = document.getElementById("pickupLocation").value;
+        const dropLocation = document.getElementById("dropLocation");
+
+        // Clear existing options
+        dropLocation.innerHTML = '';
+
+        // Add options based on pickup selection
+        if (pickupLocation === "Hotel") {
+            dropLocation.options.add(new Option("Wadala Station", "Wadala Station"));
+        } else {
+            dropLocation.options.add(new Option("Hotel", "Hotel"));
+        }
+
+        // Always add the other option that is not selected
+        if (pickupLocation === "Hotel") {
+            dropLocation.options.add(new Option("Hotel", "Hotel"));
+        } else {
+            dropLocation.options.add(new Option("Wadala Station", "Wadala Station"));
+        }
+    }
+
+
+        // Function to handle tab content visibility
+        function showContent(tabId) {
+            var tabs = document.getElementsByClassName("tabContent");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";  // Hide all tabs
+            }
+            document.getElementById(tabId).style.display = "block";  // Show selected tab
+            
+            // Hide flash messages when changing tabs
+            document.getElementById('flash-message').style.display = 'none';
+        }
+
+        // Display flash messages if any
+        {% if messages %}
+            document.getElementById('flash-message').style.display = 'block';
+        {% endif %}
+    </script>
+
+</body>
+</html>
